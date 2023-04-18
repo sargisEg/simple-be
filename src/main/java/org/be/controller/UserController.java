@@ -7,10 +7,7 @@ import org.be.controller.dto.SignInRequestDto;
 import org.be.controller.dto.UserDto;
 import org.be.facade.UserFacade;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -35,6 +32,16 @@ public class UserController {
                 .body(userDto);
     }
 
-//    @GetMapping("users")
-//    ResponseEntity<List<UserDto>>
+    @GetMapping("users")
+    ResponseEntity<List<UserDto>> getAllUsers() {
+        final List<UserDto> allUsers = userFacade.getAllUsers();
+        return ResponseEntity.ok(allUsers);
+    }
+
+    @DeleteMapping("users/{userId}")
+    ResponseEntity<UserDto> deleteUser(@PathVariable("userId") Long userId) {
+        final UserDto userDto = userFacade.deleteUserById(userId);
+        return ResponseEntity.status(userDto.getStatus())
+                .body(userDto);
+    }
 }

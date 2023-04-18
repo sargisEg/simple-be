@@ -6,6 +6,7 @@ import org.be.repository.UserRepository;
 import org.be.service.core.UserService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -28,12 +29,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<User> getByUsername(String username) {
+    public Optional<User> findByUsername(String username) {
         return userRepository.findByUsername(username);
     }
 
     @Override
-    public Optional<User> getById(Long id) {
+    public Optional<User> findById(Long id) {
         return userRepository.findById(id);
+    }
+
+    @Override
+    public List<User> findAll() {
+        return userRepository.findAll();
     }
 }
