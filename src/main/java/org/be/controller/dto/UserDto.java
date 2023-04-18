@@ -13,8 +13,10 @@ public class UserDto {
     private String username;
 
     private String error;
+    private Integer status;
 
-    public UserDto(String error) {
+    public UserDto(String error, Integer status) {
+        this.status = status;
         this.error = error;
     }
 }

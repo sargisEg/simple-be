@@ -22,17 +22,17 @@ public class UserFacadeImpl implements UserFacade {
     public UserDto registerUser(RegisterUserRequestDto dto) {
         log.info("Registering user with username - {} for provided request", dto.getUsername());
         if (Strings.isBlank(dto.getUsername()) || Strings.isBlank(dto.getPassword())) {
-            return new UserDto("Request body values should not be null or empty");
+            return new UserDto("Request body values should not be null or empty", 404);
         }
 
         final Optional<User> optionalUser = userService.getByUsername(dto.getUsername());
         if (optionalUser.isPresent()) {
-            return new UserDto("User with username - " + dto.getUsername() + " already exist");
+            return new UserDto("User with username - " + dto.getUsername() + " already exist", 409);
         }
 
         final User user = userService.create(dto.getUsername(), dto.getPassword());
 
-        final UserDto userDto = new UserDto(user.getId(), user.getUsername(), null);
+        final UserDto userDto = new UserDto(user.getId(), user.getUsername(), null, 200);
 
         log.info("Successfully registered user username - {} for provided request, response - {}", dto.getUsername(), userDto);
         return userDto;

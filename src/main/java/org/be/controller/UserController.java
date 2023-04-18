@@ -18,6 +18,8 @@ public class UserController {
 
     @PostMapping
     ResponseEntity<UserDto> createUser(RegisterUserRequestDto dto) {
-        return null;
+        final UserDto userDto = userFacade.registerUser(dto);
+        return ResponseEntity.status(userDto.getStatus())
+                .body(userDto);
     }
 }
