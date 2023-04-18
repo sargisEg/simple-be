@@ -9,6 +9,8 @@ import org.be.entity.User;
 import org.be.service.core.UserService;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
+
 @Slf4j
 @Component
 @RequiredArgsConstructor
@@ -18,16 +20,21 @@ public class UserFacadeImpl implements UserFacade {
 
     @Override
     public UserDto registerUser(RegisterUserRequestDto dto) {
-        log.info("Registering user for provided request - {}", dto);
+        log.info("Registering user with username - {} for provided request", dto.getUsername());
         if (Strings.isBlank(dto.getUsername()) || Strings.isBlank(dto.getPassword())) {
             return new UserDto("Request body values should not be null or empty");
+        }
+
+        final Optional<User> optionalUser = userService.getByUsername(dto.getUsername());
+        if (optionalUser.isPresent()) {
+            return new UserDto("User with username - " + dto.getUsername() + " already exist");
         }
 
         final User user = userService.create(dto.getUsername(), dto.getPassword());
 
         final UserDto userDto = new UserDto(user.getId(), user.getUsername(), null);
 
-        log.info("Successfully registered user for provided request - {}, response - {}", dto, userDto);
+        log.info("Successfully registered user username - {} for provided request, response - {}", dto.getUsername(), userDto);
         return userDto;
     }
 }
